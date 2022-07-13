@@ -5,17 +5,19 @@
 
 {% for fragrance in fragrances %}
   <div class="card">
-    <div class="card-content">
-      <span class="card-title">{{ fragrance.name }}</span>
-      <p>Breed: {{ fragrance.brand }}</p>
-      <p>Description: {{ fragrance.description }}</p>
-      {% if cat.age > 0 %}
-        <p>Age: {{ fragrance.release_year }}</p>
-      {% else %}
-        <p>Release Year: Unknown</p>
-      {% endif %}
-    </div>
+    <a href = "{% url 'detail' fragrance.id %}">
+        <div class="card-content">
+        <span class="card-title">{{ fragrance.name }}</span>
+        <p>Brand: {{ fragrance.brand }}</p>
+        <p>Description: {{ fragrance.description }}</p>
+        {% if cat.age > 0 %}
+            <p>Age: {{ fragrance.release_year }}</p>
+        {% else %}
+            <p>Release Year: Unknown</p>
+        {% endif %}
+        </div>
+    </a>
   </div>
-{% endfor %}
 
+{% endfor %}
 {% endblock %}

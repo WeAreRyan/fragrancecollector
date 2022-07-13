@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Fragrance Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ fragrance.name }}</span>
+        <p>Brand: {{ fragrance.brand }}</p>
+        <p>Description: {{ fragrance.description|linebreaks }}</p>
+        {% if fragrance.release_year > 0 %}
+          <p>Release Year: {{ fragrance.release_year }}</p>
+        {% else %}
+          <p>Release date is unknown</p>
+        {% endif %}
+      </div>
+      <div class="card-action">
+        <a href="{% url 'fragrances_update' fragrance.id %}">Edit</a>
+        <a href="{% url 'fragrances_delete' fragrance.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="col s6">
+    <form action="{% url 'add_purchase' fragrance.id %}" method="POST">
+      {% csrf_token %}
+      {{ purchase_form.as_p }}
+      <input type="submit" class="btn" value="Add Purchase">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Purchase Date</th><th>Bottle Size</th><th>Cost</th></tr>
+      </thead>
+      <tbody>
+        {% for purchase in fragrance.purchase_set.all %}
+          <tr>
+            <td>{{purchase.date}}</td>
+            <td>{{purchase.get_size_display}}</td>
+            <td>${{purchase.price}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<script>
+  const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectEl = document.getElementById('id_size');
+  M.FormSelect.init(selectEl);
+</script>
+
+{% endblock %}
