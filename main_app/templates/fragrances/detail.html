@@ -45,7 +45,50 @@
   </div>
 </div>
 
+<!-- Display for notes associated with fragrance -->
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ fragrance.name }}'s Notes</h3>
+    {% if fragrance.notes.count %}
+      {% for note in fragrance.notes.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ fragrance.name}} has a <span>{{ note.category }}</span> of {{ note.name }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Notes added yet. </h5>
+    {% endif %}
+  </div>
 
+<!-- Notes able to be added to fragrance -->
+<div class="col s6">
+  <h3>Fragrance Notes</h3>
+  {% if notes.count %}
+    {% for note in notes.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            A <span>{{ note.name }}</span> which is a {{ note.category }}
+          </span>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'assoc_note' fragrance.id note.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn">Add</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <h5>{{fragrance.name}} Has all notes.... ?</h5>
+  {% endif %}
+</div>
+</div>
 
 <script>
   const dateEl = document.getElementById('id_date');

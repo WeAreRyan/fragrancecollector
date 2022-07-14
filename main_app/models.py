@@ -10,12 +10,37 @@ BOTTLESIZES = (
     ('125', '4.2 FL. OZ or 125 mL'), 
 )
 
+NOTETYPE = (
+    ('Top note', 'Top note'), 
+    ('Middle note', 'Middle note'), 
+    ('Base note', 'Base note')
+)
+
 # Create your models here.
+class Note(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=300)
+    category = models.CharField(
+        max_length=15, 
+        choices=NOTETYPE, 
+        default=NOTETYPE[0][0]
+    )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("notes_detail", kwargs={"pk": self.pk})
+
+
+
+
 class Fragrance(models.Model):
     name = models.CharField(max_length=100)
     brand = models.CharField(max_length=100)
     description = models.TextField(max_length=300)
     release_year = models.IntegerField()
+    notes = models.ManyToManyField(Note)
 
     def __str__(self):
         return self.name
